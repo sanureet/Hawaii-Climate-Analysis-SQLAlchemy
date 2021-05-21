@@ -13,7 +13,14 @@ def welcome():
         
         f"Available Routes:<br/>"
         f"/api/v1.0/precipitation:<br/>"
+        f"/api/v1.0/stations:<br/>"
+        f"/api/v1.0/tobs:<br/>"
+        f"/api/v1.0/<start><br/>"
+        f"put the start date in 'YYYY-MM-DD' format<br/>"
+        f"/api/v1.0/<start>/<end><br/>"
+        f"put the dates in 'YYYY-MM-DD/YYYY-MM-DD' format<br/>"
     )
+       
 
 @app.route("/api/v1.0/precipitation")
 def precp():
