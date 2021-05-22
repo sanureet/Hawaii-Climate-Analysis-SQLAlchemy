@@ -44,6 +44,13 @@ def precp():
  #   print("test values")
  #   return "precp page"
     session = Session(engine)
+# calculate the date
+    last_date = session.query(measurement.date).order_by(measurement.date.desc()).first()[0]
+    last_date = dt.datetime.strptime(last_date, "%Y-%m-%d")
+
+    last_year = last_date - dt.timedelta(days = 365)
+
+
     #perform a query to get data
 
     precip_results = (
@@ -52,7 +59,7 @@ def precp():
     .order_by(measurement.date)
     .all()
     )
-    return jsonify(prcp_results)
+    return jsonify(precip_results)
 
 @app.route("/api/v1.0/stations")  
 def stations():
@@ -71,6 +78,7 @@ def stations():
 def tobs():
 
     session = Session(engine)
+
     temp_observation = station_count[0][0]
     results = (
         session.query(measurement.date, measurement.tobs).\
@@ -78,10 +86,27 @@ def tobs():
                 filter(measurement.date <= "2017-08-23").\
                 filter(measurement.station == temp_observation).all()
     )
+    
     return jsonify(results)
 
 @app.route("/api/v1.0/<start>")
 def start(start):
+    session = Session(engine)
+    most_active_station = 'USC00519281'
+
+    temp = (
+        session.query(func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs)).\
+                filter(measurement.station == most_active_station).all()
+    )
+    
+    return jsonify(temp)
+
+@app.route("/api/v1.0/<start>/<end>")
+def start_end_day(start, end):
+    
+
+
+
     
 
 
