@@ -103,14 +103,24 @@ def start(start):
 
 @app.route("/api/v1.0/<start>/<end>")
 def start_end_day(start, end):
-    
+    session = Session(engine)
+    calc_temps=('2012-02-28', '2012-03-05')
+    calc_temps=('start_date', 'end_date')
+    start_date = '2012-02-28'
+    end_date = '2012-03-05'
+
+
+    results = (
+        session.query(func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)).\
+        filter(measurement.date >= start_date).filter(measurement.date <= end_date).all()
+
+    )
+    return jsonify(results)
 
 
 
-    
 
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    if __name__ == "__main__":
+        app.run(debug=True)
 
